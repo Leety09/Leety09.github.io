@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  Tianyu Li — Personal Homepage  (v6: sticky top nav + sidebar)
+  ----------------------------------------------------------------------------
+  PLACEHOLDERS TO FILL — search for "FILL:" or the attribute  data-fill="..."
+    • Photo        -> .photo   (replace placeholder with  <img src="me.jpg" alt="Tianyu Li">)
+    • Location     -> .loc text (currently "Singapore")
+    • GitHub / Scholar / CV links     (sidebar)
+    • School / company logos  -> each .logo box (replace with  <img src="ntu.png" alt="NTU">)
+    • Supervisors  -> .sup text in Research Experience
+    • Paper PDF / code / project / demo links + demo media   (Publications)
+    • News items / dates    -> edit the <li> entries under #news
+  Every  href="#"  with a  data-fill  attribute is waiting for a real URL.
+  ============================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tianyu Li — Embodied AI &amp; Robot Learning</title>
+<meta name="description" content="Tianyu Li — incoming MSc at NTU; embodied AI and robotic manipulation, vision-language-action models, complex grasping benchmarks, and sim-to-real." />
+<meta name="theme-color" content="#5178D7" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#FFFFFF;
+    --surface:#FFFFFF;
+    --ink:#071A46;
+    --ink-soft:#183363;
+    --ink-faint:#52678F;
+    --line:rgba(112,137,190,.18);
+    --line-strong:rgba(91,119,178,.30);
+    --accent:#4974D5;
+    --accent-deep:#315BB8;
+    --accent-wash:rgba(73,116,213,.10);
+    --grad:linear-gradient(120deg,#6AA7F7 0%,#667EEA 50%,#8197F0 100%);
+    --text-grad:linear-gradient(105deg,#176BDB 0%,#4F63E8 42%,#8B3FD1 100%);
+    --signal:#557ED8;
+    --font-display:'Nunito','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+    --font-body:'Nunito','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+    --font-mono:'DM Mono','SFMono-Regular',monospace;
+    --topbar-h:62px;
+    --side-w:clamp(228px,22vw,320px);
+    --content-max:1080px;
+    --pad:clamp(26px,4vw,64px);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;font-size:13px;}
+  body{margin:0;background:#FFFFFF;color:var(--ink);font-family:var(--font-body);font-size:1rem;line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  ::selection{background:var(--accent);color:#fff;}
+
+  /* =========================================================
+     TOP NAV  (sticky, full width, scroll-highlight)
+  ========================================================= */
+  .topbar{position:sticky;top:0;z-index:60;height:var(--topbar-h);background:rgba(255,255,255,.90);backdrop-filter:blur(18px) saturate(150%);border-bottom:1px solid var(--line);}
+  .topbar-inner{height:100%;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:0 var(--pad);}
+  .brand{font-family:var(--font-mono);font-size:.88rem;letter-spacing:.04em;font-weight:700;flex:none;}
+  .brand span{color:var(--accent);}
+  .topnav{display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;}
+  .topnav::-webkit-scrollbar{display:none;}
+  .topnav a{font-family:var(--font-mono);font-size:.78rem;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-faint);padding:8px 13px;border-radius:8px;white-space:nowrap;transition:color .2s ease,background .2s ease;}
+  .topnav a:hover{color:var(--ink-soft);background:var(--accent-wash);}
+  .topnav a.active{color:var(--accent);background:var(--accent-wash);font-weight:700;}
+  @media(max-width:560px){.brand{display:none;}.topbar-inner{justify-content:flex-start;}}
+
+  /* =========================================================
+     LAYOUT
+  ========================================================= */
+  .layout{display:grid;grid-template-columns:var(--side-w) 1fr;}
+  @media(max-width:960px){.layout{grid-template-columns:1fr;}}
+
+  .sidebar{position:sticky;top:var(--topbar-h);height:calc(100vh - var(--topbar-h));overflow-y:auto;background:#FFFFFF;border-right:1px solid var(--line);padding:44px clamp(22px,2vw,34px);display:flex;flex-direction:column;}
+  .side-inner{display:flex;flex-direction:column;height:100%;}
+
+  .photo{
+    position:relative;width:100%;max-width:clamp(168px,15vw,212px);margin:0 auto;aspect-ratio:7/12;border-radius:50%;overflow:hidden;
+    background:linear-gradient(160deg,#EEF6FF,#E5E9FF);border:1px solid var(--line-strong);
+    display:flex;align-items:center;justify-content:center;box-shadow:0 18px 42px -26px rgba(47,83,160,.42);
+  }
+  .photo img{width:100%;height:100%;object-fit:cover;}
+  .photo .ph{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);text-align:center;padding:0 16px;line-height:1.8;}
+  .photo .ph svg{width:34px;height:34px;margin:0 auto 10px;display:block;opacity:.5;}
+
+  .name{font-family:var(--font-display);font-weight:700;font-size:2.42rem;letter-spacing:-.025em;text-align:center;margin:28px 0 4px;line-height:1;}
+  .name,.sec-head h2,.role b,.intro b,.news .what b,.authors .me{
+    color:var(--accent-deep);
+    background:var(--text-grad);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .zh{font-family:var(--font-display);font-size:1.64rem;font-weight:700;letter-spacing:.14em;text-align:center;margin:3px 0 14px;color:var(--ink);}
+  .role{font-size:1.13rem;color:var(--ink-soft);text-align:center;margin:0;font-weight:500;line-height:1.5;}
+  .role b{font-weight:700;}
+
+  .side-list{list-style:none;padding:0;margin:28px 0 0;display:flex;flex-direction:column;gap:2px;}
+  .side-list a,.side-list .loc{display:flex;align-items:center;gap:13px;padding:10px 12px;border-radius:10px;font-size:1.08rem;color:var(--ink-soft);transition:color .22s ease,background .22s ease,transform .22s cubic-bezier(.2,.8,.2,1);}
+  .side-list a:hover,.side-list .loc:hover{color:var(--accent);background:var(--accent-wash);transform:translateX(5px);}
+  .side-list .ic{width:20px;height:20px;flex:none;color:var(--accent);}
+  .side-list .loc .ic{color:var(--signal);}
+
+  .side-foot{margin-top:auto;font-family:var(--font-mono);font-size:.76rem;color:var(--ink-faint);letter-spacing:.03em;padding-top:26px;}
+
+  @media(max-width:960px){
+    .sidebar{position:static;height:auto;border-right:none;border-bottom:1px solid var(--line);padding:22px var(--pad);}
+    .side-inner{display:flex;flex-direction:row;align-items:center;flex-wrap:wrap;gap:18px;}
+    .photo{flex:none;width:100px;max-width:100px;aspect-ratio:4/5;margin:0;}
+    .id-text{flex:0 1 auto;min-width:0;}
+    .id-text .name{text-align:left;margin:0;font-size:1.8rem;}
+    .id-text .zh{text-align:left;margin:2px 0 0;}
+    .id-text .role{text-align:left;margin:6px 0 0;}
+    .side-list{flex:0 0 auto;margin-left:auto;flex-direction:row;flex-wrap:wrap;gap:8px;}
+    .side-list .loc{display:none;}
+    .side-list .lbl{display:none;}
+    .side-list a{width:40px;height:40px;padding:0;justify-content:center;border:1px solid var(--line-strong);border-radius:11px;}
+    .side-foot{display:none;}
+  }
+
+  /* =========================================================
+     MAIN
+  ========================================================= */
+  .main{min-width:0;}
+  .block{padding:clamp(36px,5vw,58px) var(--pad) 0;max-width:var(--content-max);scroll-margin-top:calc(var(--topbar-h) + 16px);}
+  .block.first{padding-top:clamp(30px,4vw,46px);}
+  footer{scroll-margin-top:calc(var(--topbar-h) + 16px);}
+
+  .sec-head{display:flex;align-items:center;gap:13px;margin:0 0 32px;padding-bottom:16px;border-bottom:2px solid var(--line);}
+  .sec-head .sec-ic{width:34px;height:34px;border-radius:9px;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 9px 22px -11px rgba(61,100,196,.65);}
+  .sec-head .sec-ic svg{width:19px;height:19px;}
+  .sec-head h2{font-family:var(--font-display);font-weight:600;font-size:clamp(1.55rem,3.4vw,2.15rem);letter-spacing:-.02em;margin:0;line-height:1;}
+
+  /* ABOUT */
+  .intro{font-size:clamp(1.06rem,1.5vw,1.2rem);color:var(--ink-soft);margin:0;line-height:1.62;}
+  .intro b{font-weight:700;}
+  .intro b .text-link{
+    background:var(--text-grad);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .text-link{font-weight:inherit;text-decoration:none;}
+  .intro .text-link{font-weight:800;text-decoration-line:underline;text-decoration-thickness:1.5px;text-underline-offset:3px;text-decoration-color:var(--accent);}
+  .interest-card{position:relative;margin:30px 0 0;padding:24px 26px 22px;background:#fff;border:1px solid var(--line-strong);border-radius:16px;overflow:hidden;box-shadow:0 18px 42px -38px rgba(35,67,135,.5);}
+  .interest-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--text-grad);}
+  .interest-card h3{display:flex;align-items:center;gap:10px;margin:0 0 16px;font-family:var(--font-display);font-size:1.28rem;font-weight:800;color:var(--ink);}
+  .interest-card h3 svg{width:21px;height:21px;color:var(--accent);flex:none;}
+  .interest-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 24px;}
+  .interest-list li{position:relative;padding-left:18px;font-size:.96rem;font-weight:700;color:var(--ink-soft);}
+  .interest-list li::before{content:"";position:absolute;left:1px;top:.63em;width:7px;height:7px;border-radius:2px;background:var(--text-grad);transform:rotate(45deg);}
+  @media(max-width:560px){.interest-card{padding:21px 20px 19px;}.interest-list{grid-template-columns:1fr;gap:9px;}}
+
+  /* NEWS */
+  .news{list-style:none;margin:0;padding:0;max-width:880px;}
+  .news li{display:grid;grid-template-columns:90px 1fr;gap:20px;align-items:baseline;padding:14px 12px;border-top:1px dashed var(--line-strong);border-radius:10px;transition:transform .22s cubic-bezier(.2,.8,.2,1),background .22s ease;}
+  .news li:hover{transform:translateX(6px);background:rgba(255,255,255,.38);}
+  .news li:first-child{border-top:none;}
+  .news .when{font-family:var(--font-mono);font-size:.74rem;color:var(--accent);justify-self:start;letter-spacing:.02em;}
+  .news .what{font-size:.98rem;color:var(--ink-soft);margin:0;}
+  .news .what b{font-weight:700;}
+  @media(max-width:520px){.news li{grid-template-columns:1fr;gap:4px;}}
+
+  /* EDUCATION + RESEARCH EXPERIENCE */
+  .cv-item{display:grid;grid-template-columns:64px 1fr auto;gap:20px;align-items:center;padding:20px 12px;border-top:1px solid var(--line);border-radius:12px;transition:transform .22s cubic-bezier(.2,.8,.2,1),background .22s ease,box-shadow .22s ease;}
+  .cv-item:hover{transform:translateX(6px);background:rgba(255,255,255,.42);box-shadow:0 14px 35px -30px rgba(45,78,150,.55);}
+  .cv-item:first-of-type{border-top:none;}
+  .logo{width:64px;height:64px;border-radius:14px;background:var(--surface);border:1px solid var(--line-strong);display:flex;align-items:center;justify-content:center;overflow:hidden;flex:none;}
+  .logo img{width:100%;height:100%;object-fit:contain;padding:8px;}
+  .logo img.logo-ntu{padding:2px;}
+  .logo img.logo-liverpool{padding:3px;}
+  .logo img.logo-smartlab{padding:2px;}
+  .logo .ph{color:var(--ink-faint);}
+  .logo .ph svg{width:24px;height:24px;}
+  .cv-main h3{font-family:var(--font-display);font-weight:600;font-size:1.12rem;margin:0 0 3px;letter-spacing:-.01em;line-height:1.25;}
+  .cv-sub{font-size:.92rem;color:var(--ink-soft);margin:0;}
+  .cv-date{font-family:var(--font-mono);font-size:.76rem;color:var(--ink-faint);white-space:nowrap;text-align:right;}
+  @media(max-width:620px){
+    .cv-item{grid-template-columns:52px 1fr;gap:14px;}
+    .logo{width:52px;height:52px;}
+    .cv-date{grid-column:2;text-align:left;margin-top:2px;}
+  }
+
+  /* PUBLICATIONS */
+  .pub{display:grid;grid-template-columns:260px 1fr;gap:clamp(20px,3vw,34px);padding:28px 12px;border-top:1px solid var(--line);border-radius:14px;transition:transform .24s cubic-bezier(.2,.8,.2,1),background .22s ease,box-shadow .22s ease;}
+  .pub:hover{transform:translateX(6px);background:rgba(255,255,255,.44);box-shadow:0 18px 42px -34px rgba(45,78,150,.62);}
+  .pub:first-of-type{border-top:none;padding-top:8px;}
+  .media{position:relative;aspect-ratio:4/3;background:linear-gradient(135deg,#EDF5FF,#E7EAFF);border:1px solid var(--line);border-radius:14px;display:flex;align-items:center;justify-content:center;overflow:hidden;align-self:start;}
+  .media img,.media video{width:100%;height:100%;object-fit:cover;}
+  .media .ph{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);text-align:center;padding:0 16px;line-height:1.7;}
+  .media .ph svg{width:26px;height:26px;margin:0 auto 8px;display:block;opacity:.6;}
+  .media .tag{position:absolute;top:11px;left:11px;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;background:var(--grad);color:#fff;padding:4px 9px;border-radius:6px;}
+  .pub-body{min-width:0;}
+  .pub-badges{display:flex;align-items:center;gap:11px;margin-bottom:10px;flex-wrap:wrap;}
+  .venue{font-family:var(--font-mono);font-size:.76rem;font-weight:700;color:var(--accent);background:var(--accent-wash);padding:5px 11px;border-radius:7px;}
+  .status{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--signal);}
+  .status i{width:6px;height:6px;border-radius:50%;background:var(--signal);}
+  .pub-body h3{font-family:var(--font-display);font-weight:600;font-size:1.2rem;line-height:1.28;margin:0 0 10px;letter-spacing:-.01em;}
+  .authors{font-size:.9rem;color:var(--ink-soft);margin:0 0 11px;line-height:1.55;}
+  .authors .me{font-weight:600;}
+  .desc{font-size:.94rem;color:var(--ink-soft);margin:0 0 16px;max-width:62ch;}
+  .links{display:flex;flex-wrap:wrap;gap:10px;}
+  .chip{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-body);font-size:.78rem;font-weight:800;letter-spacing:.01em;padding:9px 16px;border:none;border-radius:999px;color:#fff;background:var(--accent);box-shadow:0 9px 20px -13px rgba(40,79,170,.75);transition:background .2s ease,box-shadow .2s ease,transform .15s ease;}
+  .chip svg{width:15px;height:15px;flex:none;}
+  .chip:hover{color:#fff;background:var(--accent-deep);box-shadow:0 12px 24px -13px rgba(40,79,170,.9);transform:translateY(-2px);}
+  @media(max-width:640px){.pub{grid-template-columns:1fr;}.media{max-width:340px;}}
+
+  /* CONTACT */
+  footer{margin-top:clamp(56px,8vw,96px);}
+  .contact{padding:0 var(--pad);max-width:var(--content-max);}
+  .contact-card{background:#071A46;border:none;border-radius:18px;padding:clamp(28px,4vw,40px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:22px;color:#fff;box-shadow:0 26px 54px -30px rgba(7,26,70,.65);}
+  .contact-card h3{font-family:var(--font-display);font-weight:600;font-size:1.5rem;margin:0 0 6px;letter-spacing:-.01em;}
+  .contact-card p{margin:0;color:rgba(255,255,255,.86);font-size:.94rem;}
+  .contact-card .mail{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:.88rem;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);color:#fff;padding:12px 19px;border-radius:11px;transition:background .2s ease,transform .15s ease;}
+  .contact-card .mail:hover{background:rgba(255,255,255,.26);transform:translateY(-2px);}
+  .colophon{font-family:var(--font-mono);font-size:.66rem;color:var(--ink-faint);padding:28px var(--pad) 44px;letter-spacing:.03em;}
+
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1);}
+  .reveal.in{opacity:1;transform:none;}
+  .cv-item.reveal.in,.pub.reveal.in{transition:transform .22s cubic-bezier(.2,.8,.2,1),background .22s ease,box-shadow .22s ease;}
+  .cv-item.reveal.in:hover,.pub.reveal.in:hover{transform:translateX(6px);}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px;}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}.reveal{opacity:1;transform:none;}html{scroll-behavior:auto;}}
+</style>
+</head>
+<body>
+
+<!-- ===================== TOP NAV ===================== -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#about">TIANYU<span>·</span>LI</a>
+    <nav class="topnav" aria-label="Sections">
+      <a href="#about" class="active">About</a>
+      <a href="#news">News</a>
+      <a href="#education">Education</a>
+      <a href="#experience">Research Experience</a>
+      <a href="#publications">Publications</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ===================== SIDEBAR ===================== -->
+  <aside class="sidebar">
+    <div class="side-inner">
+      <div class="photo">
+        <img src="images/profile.jpg" alt="Tianyu Li">
+      </div>
+
+      <div class="id-text">
+        <h1 class="name">Tianyu Li</h1>
+        <p class="zh">李天羽</p>
+        <p class="role"><b>Master student at NTU</b><br>Embodied AI · Robot Learning</p>
+      </div>
+
+      <ul class="side-list">
+        <!-- FILL: location -->
+        <li class="loc"><svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z"/></svg><span class="lbl">Singapore</span></li>
+        <li><a href="mailto:tianyu026@e.ntu.edu.sg"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span class="lbl">Email</span></a></li>
+        <!-- FILL: GitHub -->
+        <li><a href="https://github.com/Leety09" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49v-1.7c-2.78.62-3.37-1.22-3.37-1.22-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.63-1.38-2.22-.26-4.55-1.14-4.55-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05a9.4 9.4 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9v2.82c0 .27.18.6.69.49A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/></svg><span class="lbl">GitHub</span></a></li>
+        <!-- FILL: Google Scholar -->
+        <li><a href="#" data-fill="scholar"><svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 1 9l11 6 9-4.91V17h2V9L12 3Z"/><path d="M5 13.18V17c0 1.66 3.13 3 7 3s7-1.34 7-3v-3.82l-7 3.82-7-3.82Z"/></svg><span class="lbl">Google Scholar</span></a></li>
+        <!-- FILL: CV -->
+        <li><a href="documents/Tianyu_Li_CV.pdf" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24"><path fill="currentColor" d="M6 2h7l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"/><path fill="#fff" fill-opacity=".45" d="M13 2l5 5h-4a1 1 0 0 1-1-1V2Z"/><text x="11.8" y="18" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="6.2" fill="#fff">PDF</text></svg><span class="lbl">CV</span></a></li>
+      </ul>
+
+      <p class="side-foot">© <span class="yr"></span> Tianyu Li</p>
+    </div>
+  </aside>
+
+  <!-- ===================== MAIN ===================== -->
+  <main class="main">
+
+    <!-- ABOUT -->
+    <section class="block first" id="about">
+      <p class="intro reveal">
+        I am currently an MSc student in Robotics &amp; Intelligent Systems at
+        <b><a class="text-link" href="https://www.ntu.edu.sg" target="_blank" rel="noopener noreferrer">Nanyang Technological University</a></b>.
+        Prior to joining NTU, I studied at the
+        <b><a class="text-link" href="https://www.liverpool.ac.uk" target="_blank" rel="noopener noreferrer">University of Liverpool</a></b>,
+        where I worked as a Research Assistant at the
+        <b><a class="text-link" href="https://smartlab.csc.liv.ac.uk" target="_blank" rel="noopener noreferrer">Smart Robotic Lab</a></b>
+        under the supervision of
+        <b><a class="text-link" href="https://cgi.csc.liv.ac.uk/~anguyen/" target="_blank" rel="noopener noreferrer">Prof. Anh Nguyen</a></b>.
+        I graduated from the University of Liverpool with First Class Honours.
+      </p>
+      <div class="interest-card reveal">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M9 8V5a3 3 0 0 1 6 0v3M2 13h3M19 13h3M9 13h.01M15 13h.01M9 17h6"/></svg>Research Interests</h3>
+        <ul class="interest-list">
+          <li>Vision-Language-Action Models</li>
+          <li>Imitation Learning</li>
+          <li>Robotic Grasping</li>
+          <li>Sim-to-Real</li>
+          <li>Data Collection</li>
+          <li>Robot Datasets</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- NEWS -->
+    <section class="block" id="news">
+      <div class="sec-head reveal"><span class="sec-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h13v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5Z"/><path d="M17 8h3v9a2 2 0 0 1-2 2"/><path d="M8 9h6M8 13h5"/></svg></span><h2>News</h2></div>
+      <!-- FILL: edit dates / items as needed -->
+      <ul class="news reveal">
+        <li><span class="when">2026.06.29</span><p class="what">Honored to graduate from the <b>University of Liverpool</b> with First Class Honours.</p></li>
+        <li><span class="when">2026.06.18</span><p class="what">Our paper, <b>Gripper-aware Vision-Language-Action Models</b>, was accepted to <b>ECCV 2026</b>.</p></li>
+        <li><span class="when">2026.06.17</span><p class="what">Our paper, <b>GCA-Bench</b>, was accepted to <b>IROS 2026</b>.</p></li>
+      </ul>
+    </section>
+
+    <!-- EDUCATION -->
+    <section class="block" id="education">
+      <div class="sec-head reveal"><span class="sec-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 3 10 5-10 5L2 8l10-5Z"/><path d="M6 10.5V15c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5"/></svg></span><h2>Education</h2></div>
+
+      <div class="cv-item reveal">
+        <div class="logo"><img class="logo-ntu" src="images/logo-ntu.png" alt="Nanyang Technological University"></div>
+        <div class="cv-main">
+          <h3><a class="text-link" href="https://www.ntu.edu.sg" target="_blank" rel="noopener noreferrer">Nanyang Technological University (NTU)</a></h3>
+          <p class="cv-sub">MSc, Robotics &amp; Intelligent Systems</p>
+        </div>
+        <div class="cv-date">From Aug 2026</div>
+      </div>
+
+      <div class="cv-item reveal">
+        <div class="logo"><img class="logo-liverpool" src="images/logo-liverpool.png" alt="University of Liverpool"></div>
+        <div class="cv-main">
+          <h3><a class="text-link" href="https://www.liverpool.ac.uk" target="_blank" rel="noopener noreferrer">University of Liverpool</a></h3>
+          <p class="cv-sub">BSc, Computer Science with Software Development<br>First Class Honours (Top 10%)</p>
+        </div>
+        <div class="cv-date">2023 — 2026</div>
+      </div>
+    </section>
+
+    <!-- RESEARCH EXPERIENCE -->
+    <section class="block" id="experience">
+      <div class="sec-head reveal"><span class="sec-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3v6l-5 9a2 2 0 0 0 1.8 3h12.4A2 2 0 0 0 20 18l-5-9V3"/><path d="M8 3h8M7.5 14h9"/></svg></span><h2>Research Experience</h2></div>
+
+      <div class="cv-item reveal">
+        <div class="logo"><img class="logo-smartlab" src="images/logo-smart-robotic-lab.png" alt="Smart Robotic Lab"></div>
+        <div class="cv-main">
+          <h3><a class="text-link" href="https://smartlab.csc.liv.ac.uk" target="_blank" rel="noopener noreferrer">Smart Robotic Lab</a>, <a class="text-link" href="https://www.liverpool.ac.uk" target="_blank" rel="noopener noreferrer">University of Liverpool</a></h3>
+          <p class="cv-sub">Research Assistant · supervised by <a class="text-link" href="https://cgi.csc.liv.ac.uk/~anguyen/" target="_blank" rel="noopener noreferrer">Prof. Anh Nguyen</a></p>
+        </div>
+        <div class="cv-date">Aug 2025 — Jun 2026</div>
+      </div>
+
+      <div class="cv-item reveal">
+        <div class="logo"><img src="images/logo-hesai.png" alt="Hesai Technology"></div>
+        <div class="cv-main">
+          <h3>Hesai Technology</h3>
+          <p class="cv-sub">Embodied AI Industry Research Intern</p>
+        </div>
+        <div class="cv-date">Jul 2024 — Sep 2024</div>
+      </div>
+    </section>
+
+    <!-- PUBLICATIONS -->
+    <section class="block" id="publications">
+      <div class="sec-head reveal"><span class="sec-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3v5h5"/><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8l-5-5Z"/><path d="M9 13h6M9 17h6"/></svg></span><h2>Publications</h2></div>
+
+      <article class="pub reveal">
+        <div class="media">
+          <video src="videos/demo-gripper-aware.mp4" autoplay muted loop playsinline></video>
+          <span class="tag">ECCV 2026</span>
+        </div>
+        <div class="pub-body">
+          <div class="pub-badges"><span class="venue">ECCV 2026</span><span class="status"><i></i>To appear</span></div>
+          <h3>Gripper-aware Vision-Language-Action Models</h3>
+          <p class="authors">Hanyi Zhang, Zihong Luo, <span class="me">Tianyu Li</span>, Khang Nguyen, Basu Hela, Shreyas Kumar, Ngoc Duy Tran, Feng Dai, Khoa Vo, Ngan Le, Shigeru Chiba, Ravi Prakash, Tung D. Ta, Anh Nguyen, Baoru Huang</p>
+          <p class="desc">We introduce MiGA, a dataset of 103,000 demonstrations across five gripper types, and GVLA, a gripper-conditioned VLA framework combining multi-gripper tokenization with a dual Mixture-of-Adapters. Experiments in simulation and on real robots demonstrate improved gripper-aware strategy learning, generalization, and cross-gripper transfer.</p>
+          <div class="links">
+            <a class="chip" href="#" data-fill="eccv-page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.4 2.5 3.6 5.5 3.6 9S14.4 18.5 12 21c-2.4-2.5-3.6-5.5-3.6-9S9.6 5.5 12 3Z"/></svg>Homepage</a>
+            <a class="chip" href="#" data-fill="eccv-pdf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v5h5M9 12h6M9 16h6"/></svg>Paper</a>
+            <a class="chip" href="#" data-fill="eccv-code"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49v-1.7c-2.78.62-3.37-1.22-3.37-1.22-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.63-1.38-2.22-.26-4.55-1.14-4.55-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05a9.4 9.4 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9v2.82c0 .27.18.6.69.49A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/></svg>Code</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="pub reveal">
+        <div class="media">
+          <img src="images/gca-bench.png" alt="GCA-Bench overview">
+          <span class="tag">IROS 2026</span>
+        </div>
+        <div class="pub-body">
+          <div class="pub-badges"><span class="venue">IROS 2026</span><span class="status"><i></i>To appear</span></div>
+          <h3>GCA-Bench: Beyond Visual Grasping — Benchmarking Complex Grasping from Detection to Execution</h3>
+          <p class="authors">Hanyi Zhang, Khang Nguyen, Charith Munasinghe, Basu Hela, <span class="me">Tianyu Li</span>, Zihong Luo, Hoan Nguyen, Hans Wernher van de Venn, Yalin Zheng, Ravi Prakash, Tung D. Ta, Anh Nguyen, Baoru Huang</p>
+          <p class="desc">GCA-Bench evaluates robotic grasping as an end-to-end process requiring semantic reasoning, scene understanding, and trajectory-level execution. It comprises 102 tasks across singulated, cluttered, constrained-space, and semantic scenarios, with simulation and real-world demonstrations for evaluating grasping pipelines and VLA models.</p>
+          <div class="links">
+            <a class="chip" href="#" data-fill="iros-page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.4 2.5 3.6 5.5 3.6 9S14.4 18.5 12 21c-2.4-2.5-3.6-5.5-3.6-9S9.6 5.5 12 3Z"/></svg>Homepage</a>
+            <a class="chip" href="#" data-fill="iros-pdf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v5h5M9 12h6M9 16h6"/></svg>Paper</a>
+            <a class="chip" href="#" data-fill="iros-code"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49v-1.7c-2.78.62-3.37-1.22-3.37-1.22-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.63-1.38-2.22-.26-4.55-1.14-4.55-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05a9.4 9.4 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9v2.82c0 .27.18.6.69.49A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/></svg>Code</a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- CONTACT -->
+    <footer id="contact">
+      <section class="block" style="padding-bottom:0;">
+        <div class="sec-head reveal"><span class="sec-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><h2>Contact</h2></div>
+      </section>
+      <div class="contact reveal">
+        <div class="contact-card">
+          <div>
+            <h3>Let&rsquo;s talk robots.</h3>
+            <p>I am actively seeking research internship opportunities and PhD positions for 2027 or 2028.</p>
+          </div>
+          <a class="mail" href="mailto:tianyu026@e.ntu.edu.sg">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            tianyu026@e.ntu.edu.sg
+          </a>
+        </div>
+      </div>
+      <p class="colophon">© <span class="yr"></span> Tianyu Li · Built with plain HTML &amp; CSS.</p>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  document.querySelectorAll('.yr').forEach(el=>el.textContent=new Date().getFullYear());
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if(!reduce && 'IntersectionObserver' in window){
+    const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.1,rootMargin:'0px 0px -8% 0px'});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  }else{document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));}
+
+  // scroll-highlight in the top nav
+  const navLinks=[...document.querySelectorAll('.topnav a')];
+  const sections=navLinks.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  if('IntersectionObserver' in window){
+    const spy=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){const id='#'+e.target.id;navLinks.forEach(a=>{const on=a.getAttribute('href')===id;a.classList.toggle('active',on);if(on)a.scrollIntoView({block:'nearest',inline:'center'});});}});},{rootMargin:'-45% 0px -52% 0px',threshold:0});
+    sections.forEach(s=>spy.observe(s));
+  }
+</script>
+</body>
+</html>
