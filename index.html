@@ -432,7 +432,7 @@
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if(!reduce && 'IntersectionObserver' in window){
-    const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.1,rootMargin:'0px 0px -8% 0px'});
+    const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.01,rootMargin:'0px 0px 10% 0px'});
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   }else{document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));}
 
