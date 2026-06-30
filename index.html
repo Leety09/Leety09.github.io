@@ -191,6 +191,7 @@
   .pub:hover{transform:translateX(6px);background:rgba(255,255,255,.44);box-shadow:0 18px 42px -34px rgba(45,78,150,.62);}
   .pub:first-of-type{border-top:none;padding-top:8px;}
   .media{position:relative;aspect-ratio:4/3;background:linear-gradient(135deg,#EDF5FF,#E7EAFF);border:1px solid var(--line);border-radius:14px;display:flex;align-items:center;justify-content:center;overflow:hidden;align-self:start;}
+  .media.project-media{aspect-ratio:16/9;}
   .media img,.media video{width:100%;height:100%;object-fit:cover;}
   .media .ph{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);text-align:center;padding:0 16px;line-height:1.7;}
   .media .ph svg{width:26px;height:26px;margin:0 auto 8px;display:block;opacity:.6;}
@@ -240,6 +241,7 @@
       <a href="#education">Education</a>
       <a href="#experience">Research Experience</a>
       <a href="#publications">Publications</a>
+      <a href="#projects">Projects</a>
       <a href="#contact">Contact</a>
     </nav>
   </div>
@@ -399,6 +401,28 @@
             <a class="chip" href="#" data-fill="iros-page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.4 2.5 3.6 5.5 3.6 9S14.4 18.5 12 21c-2.4-2.5-3.6-5.5-3.6-9S9.6 5.5 12 3Z"/></svg>Homepage</a>
             <a class="chip" href="#" data-fill="iros-pdf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v5h5M9 12h6M9 16h6"/></svg>Paper</a>
             <a class="chip" href="#" data-fill="iros-code"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49v-1.7c-2.78.62-3.37-1.22-3.37-1.22-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.63-1.38-2.22-.26-4.55-1.14-4.55-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05a9.4 9.4 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9v2.82c0 .27.18.6.69.49A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/></svg>Code</a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="block" id="projects">
+      <div class="sec-head reveal"><span class="sec-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 9 4 12l4 3M16 9l4 3-4 3M14 5l-4 14"/></svg></span><h2>Projects</h2></div>
+
+      <article class="pub reveal">
+        <div class="media project-media">
+          <img src="images/autonomous-frontier-explorer.gif" alt="Autonomous Frontier Explorer mapping timelapse">
+          <span class="tag">Webots</span>
+        </div>
+        <div class="pub-body">
+          <div class="pub-badges"><span class="venue">Robotics Project</span><span class="status"><i></i>97.6% Map Coverage</span></div>
+          <h3>Autonomous Frontier Explorer</h3>
+          <p class="desc">An autonomous exploration and occupancy-grid mapping system for a Pioneer 3-DX robot in Webots. It combines Bayesian log-odds mapping, dynamic frontier selection, hybrid Bug navigation with PD wall following, and recovery behaviours for loops, collisions, timeouts, and stalled motion.</p>
+          <div class="links">
+            <a class="chip" href="https://github.com/Leety09/autonomous-frontier-explorer/blob/main/assets/demo/autonomous_exploration.mp4" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4V8Z"/></svg>Demo</a>
+            <a class="chip" href="https://github.com/Leety09/autonomous-frontier-explorer/blob/main/docs/technical_report.pdf" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v5h5M9 12h6M9 16h6"/></svg>Report</a>
+            <a class="chip" href="https://github.com/Leety09/autonomous-frontier-explorer" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49v-1.7c-2.78.62-3.37-1.22-3.37-1.22-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.63-1.38-2.22-.26-4.55-1.14-4.55-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05a9.4 9.4 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9v2.82c0 .27.18.6.69.49A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/></svg>Code</a>
           </div>
         </div>
       </article>
